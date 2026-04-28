@@ -852,8 +852,9 @@ const ChatPage = () => {
         body: data,
       });
       const uploadData = await res.json();
-      if (uploadData.url) {
-        setProfilePicUrl(uploadData.url);
+      if (uploadData.secure_url || uploadData.url) {
+        const urlToUse = uploadData.secure_url || uploadData.url.replace('http://', 'https://');
+        setProfilePicUrl(urlToUse);
       } else {
         alert('Failed to upload image.');
       }
@@ -1047,11 +1048,12 @@ const ChatPage = () => {
         body: data,
       });
       const uploadData = await res.json();
-      if(uploadData.url) {
+      if(uploadData.secure_url || uploadData.url) {
+        const urlToUse = uploadData.secure_url || uploadData.url.replace('http://', 'https://');
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const { data: updatedChat } = await axios.put(`${ENDPOINT}/api/chat/grouppic`, {
           chatId: selectedChat._id,
-          pic: uploadData.url
+          pic: urlToUse
         }, config);
         
         setSelectedChat(updatedChat);
@@ -1099,8 +1101,9 @@ const ChatPage = () => {
         body: data,
       });
       const uploadData = await res.json();
-      if(uploadData.url) {
-        sendMessageWithMedia(contentToSend, uploadData.url, file.type, tempId);
+      if(uploadData.secure_url || uploadData.url) {
+        const urlToUse = uploadData.secure_url || uploadData.url.replace('http://', 'https://');
+        sendMessageWithMedia(contentToSend, urlToUse, file.type, tempId);
       } else {
         alert("Cloudinary credentials not set up. Please update them in ChatPage.jsx.");
         setMessages(prev => prev.filter(m => m._id !== tempId));
@@ -2256,7 +2259,7 @@ const ChatPage = () => {
                 onClick={async () => {
                   if (window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
                     try {
-                      await axios.delete('http://${ENDPOINT}0/api/user/delete', { headers: { Authorization: `Bearer ${user.token}` } });
+                      await axios.delete(`${ENDPOINT}/api/user/delete`, { headers: { Authorization: `Bearer ${user.token}` } });
                       let accounts = JSON.parse(localStorage.getItem('userAccounts')) || [];
                       accounts = accounts.filter(acc => acc._id !== user._id);
                       localStorage.setItem('userAccounts', JSON.stringify(accounts));
