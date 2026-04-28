@@ -36,7 +36,7 @@ const Login = () => {
       };
 
       const { data } = await axios.post(
-        'http://localhost:5000/api/user/login',
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user/login`,
         { email, password },
         config
       );
@@ -67,7 +67,7 @@ const Login = () => {
     setSuccessMsg('');
     
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/forgot-password', { email: resetEmail });
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user/forgot-password`, { email: resetEmail });
       setSuccessMsg(data.message);
       setView('reset-password');
     } catch (error) {
@@ -88,7 +88,7 @@ const Login = () => {
     setSuccessMsg('');
     
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/reset-password', { 
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user/reset-password`, { 
         email: resetEmail, 
         otp: resetOtp, 
         newPassword 

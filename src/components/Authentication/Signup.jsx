@@ -41,7 +41,7 @@ const Signup = () => {
       };
 
       await axios.post(
-        'http://localhost:5000/api/user/register',
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user/register`,
         { name, email, mobile, password },
         config
       );
@@ -68,7 +68,7 @@ const Signup = () => {
       };
 
       const { data } = await axios.post(
-        'http://localhost:5000/api/user/verify',
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/user/verify`,
         { email, otp },
         config
       );
