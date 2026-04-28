@@ -2256,7 +2256,7 @@ const ChatPage = () => {
                 onClick={async () => {
                   if (window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
                     try {
-                      await axios.delete('http://localhost:5000/api/user/delete', { headers: { Authorization: `Bearer ${user.token}` } });
+                      await axios.delete('http://${ENDPOINT}0/api/user/delete', { headers: { Authorization: `Bearer ${user.token}` } });
                       let accounts = JSON.parse(localStorage.getItem('userAccounts')) || [];
                       accounts = accounts.filter(acc => acc._id !== user._id);
                       localStorage.setItem('userAccounts', JSON.stringify(accounts));
